@@ -70,25 +70,25 @@ class NotesController {
                     'notes.title',
                     'notes.user_id'
                 ])
-                .where('notes.user_id', user_id)
-                .whereLike('notes.title', `${title}`)
-                .whereIn('name', filterTags)
+                .where('notes.id', user_id)
+                .whereLike('notes.title', `%${title}%`)
                 .groupBy('notes.title')
+                .whereIn('name', filterTags)
                 .innerJoin('notes', 'notes.id', 'tags.note_id')
         } else {
             notes = await knex('notes')
                 .where({ user_id })
-                .whereLike('title', `${title}`)
+                .whereLike('title', `%${title}%`)
                 .orderBy('title')
         }
 
-        const userTags = await knex('tags').where({user_id})
+        const userTags = await knex('tags').where({ user_id })
         const notesWithTags = notes.map(note => {
             const noteTags = userTags.filter(tag => tag.note_id === note.id)
 
             return {
                 ...note,
-                tags : noteTags
+                tags: noteTags
             }
         })
 
