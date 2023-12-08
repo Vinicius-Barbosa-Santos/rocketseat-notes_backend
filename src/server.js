@@ -33,5 +33,5 @@ app.use((error, request, response, next) => {
     })
 })
 
-const PORT = process.env.SERVER_PORT
+const PORT = process.env.SERVER_PORT || 8080
 app.listen(PORT, () => console.log(`Server listening on ${PORT}`))
